@@ -1,0 +1,21 @@
+{
+  "dependencies": {
+    "bufferutil": "^4.0.7",
+    "discord.js": "^14.7.1",
+    "exceljs": "^4.3.0",
+    "node.js": "^0.0.1-security",
+    "nodejs": "^0.0.0",
+    "puppeteer": "^19.5.2",
+    "random-useragent": "^0.5.0"   
+  },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "name": "botdsj",
+  "version": "1.0.0",
+  "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
