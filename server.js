@@ -1,7 +1,28 @@
 const puppeteer = require('puppeteer');
 const randomUseragent = require('random-useragent');
+const ExcelJS = require('exceljs');
 
 //init esta la ejecucion de la extraccion de los datos class primaria
+const saveExcel = (data) => {
+    const workbook = new ExcelJS.Workbook()
+    const fileName = 'nike.xlsx'
+    const sheet = workbook.addWorksheet('Resultados')
+
+    const reColumns = [
+        {header: 'Nombre', key: 'name'},
+        {header: 'Precio', key: 'price'},
+        {header: 'Fecha', key: 'date'}
+    ]
+
+    sheet.columns = reColumns
+    sheet.addRows(data)
+
+    workbook.xlsx.writeFile(fileName).then((e) => {
+        console.log('Guardado exitosamente');
+    })
+
+}
+
 const init = async () => {
     const header = randomUseragent.getRandom();
 
@@ -13,7 +34,6 @@ const init = async () => {
     await page.setViewport({width:1920, height: 1080});
     await page.goto('https://www.nike.cl/snkrs/futuros');
     await page.waitForSelector('.container');
-    await page.screenshot({path: 'example.png'});
     
 // lista los links de cada elemento contenido
     const links = await page.evaluate(() => {
@@ -38,18 +58,22 @@ const init = async () => {
             const nombreProducto = document.querySelectorAll('.name-box h1');
             const precioProducto = document.querySelectorAll('.bestPrice');
             const fechaProducto = document.querySelectorAll('.fechafinal p');
-            return nombreProducto[0].innerHTML +', '+ precioProducto[0].innerHTML +', '+ fechaProducto[0].innerHTML
+            return ({
+                name: nombreProducto[0].innerHTML,
+                price: precioProducto[0].innerHTML,
+                date: fechaProducto[0].innerHTML
+            })
         });
 
         tillas.push(snkrs);
     };
 
-    console.log(tillas);
-    console.log(tillas.length);
     console.log("listo");
     await browser.close();
 
+    saveExcel(tillas);
 }
+
 
 init()
 
