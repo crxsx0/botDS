@@ -24,12 +24,11 @@ const saveExcel = (data) => {
 
 }
 
-const init = async () => {
+async function init () {
+    console.log('** Cargando... **');
     const header = randomUseragent.getRandom();
 
-    const browser = await puppeteer.launch({
-        headless: false
-    });
+    const browser = await puppeteer.launch();
     const page = await browser.newPage();
     await page.setUserAgent(header);
     await page.setViewport({width:1920, height: 1080});
@@ -53,17 +52,29 @@ const init = async () => {
 
     for (let link of links) {
         await page.goto(link);
-        await page.waitForTimeout(13000);
+        await page.waitForTimeout(12000);
 
         const snkrs = await page.evaluate(() => {
             const nombreProducto = document.querySelectorAll('.name-box h1'); 
             const fotoProducto = document.querySelectorAll('.thumbs img')
             const precioProducto = document.querySelectorAll('.bestPrice');
-            const fechaProducto = document.querySelectorAll('.fechafinal p');
+            const fechaProducto = document.querySelectorAll('#releaseDate p');
+
+            let fecha = null
+
+            if (fechaProducto[0] === undefined){
+                fecha = 'Ya esta disponible'
+            }
+            
+            else{
+                fecha = fechaProducto[0].innerHTML
+            };
+
+
             return ({
                 name: nombreProducto[0].innerHTML,
                 price: precioProducto[0].innerHTML,
-                date: fechaProducto[0].innerHTML,
+                date: fecha,
                 img: fotoProducto[0].getAttribute('src')
             })
         });
@@ -71,14 +82,12 @@ const init = async () => {
         tillas.push(snkrs);
     };
 
-    console.log("listo");
     await browser.close();
-
     saveExcel(tillas);
 }
 
+exports.init = init; 
 
-init()
 
 
 

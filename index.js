@@ -9,13 +9,12 @@ const client = new Client({
 });
 const XLSX = require('xlsx');
 
-const config = require('./config.json')
+const config = require('./config.json');
+const { init } = require('./server.js');
 
-client.on('ready', () => {
-    console.log('bot de mierda');
-})
 
-client.login(config.token);
+require('./server.js');
+
 
 const nombreTilla = []
 const precioTilla = []
@@ -23,7 +22,6 @@ const precioTilla = []
 function leerExcel(ruta){
     const workbook = XLSX.readFile(ruta);
     const workbookSheets = workbook.SheetNames;
-    console.log(workbookSheets);
     const sheet = workbookSheets[0];
     const dataEXcel = XLSX.utils.sheet_to_json(workbook.Sheets[sheet]);
     //console.log(dataEXcel)
@@ -31,11 +29,24 @@ function leerExcel(ruta){
       nombreTilla.push(itemFila['Nombre']);
       precioTilla.push(itemFila['Precio']);
     }
+    console.log('Archivo leido exitosamente');
 };
-  
-leerExcel('nike.xlsx')
 
-client.on('messageCreate', async (message) =>{
-    if(message.author.bot) return
-    message.channel.send(nombreTilla[0] + ' ' + precioTilla[0]);
-});
+async function encenderBot () {
+    await init();
+    setTimeout(() => {
+        console.log('** Listo **');
+        leerExcel('nike.xlsx')
+    },500);;
+    client.login(config.token);
+}
+
+encenderBot()
+
+client.on('ready', () => {
+    console.log('El bot esta disponible');
+    client.on('messageCreate', async (message) =>{
+        if(message.author.bot) return
+        message.channel.send(nombreTilla[0] + ' ' + precioTilla[0]);
+    });
+})
