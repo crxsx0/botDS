@@ -11,7 +11,8 @@ const saveExcel = (data) => {
     const reColumns = [
         {header: 'Nombre', key: 'name'},
         {header: 'Precio', key: 'price'},
-        {header: 'Fecha', key: 'date'}
+        {header: 'Fecha', key: 'date'},
+        {header: 'Foto', key: 'img'}
     ]
 
     sheet.columns = reColumns
@@ -55,13 +56,15 @@ const init = async () => {
         await page.waitForTimeout(13000);
 
         const snkrs = await page.evaluate(() => {
-            const nombreProducto = document.querySelectorAll('.name-box h1');
+            const nombreProducto = document.querySelectorAll('.name-box h1'); 
+            const fotoProducto = document.querySelectorAll('.thumbs img')
             const precioProducto = document.querySelectorAll('.bestPrice');
             const fechaProducto = document.querySelectorAll('.fechafinal p');
             return ({
                 name: nombreProducto[0].innerHTML,
                 price: precioProducto[0].innerHTML,
-                date: fechaProducto[0].innerHTML
+                date: fechaProducto[0].innerHTML,
+                img: fotoProducto[0].getAttribute('src')
             })
         });
 
