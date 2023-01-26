@@ -52,7 +52,7 @@ async function init () {
 
     for (let link of links) {
         await page.goto(link);
-        await page.waitForTimeout(12000);
+        await page.waitForTimeout(11500);
 
         const snkrs = await page.evaluate(() => {
             const nombreProducto = document.querySelectorAll('.name-box h1'); 
@@ -63,7 +63,7 @@ async function init () {
             let fecha = null
 
             if (fechaProducto[0] === undefined){
-                fecha = 'Ya esta disponible'
+                fecha = 'Se encuentra disponible!!'
             }
             
             else{

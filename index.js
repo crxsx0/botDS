@@ -40,12 +40,14 @@ function leerExcel(ruta){
 
 function listaSNKRS (){
     for (i = 0; i < nombreTilla.length; i ++){
-        snkrs.push(i +1 + '. ' + nombreTilla[i]);
+        snkrs.push(i +1 + '- ' + nombreTilla[i] + '\n');
+        nombreTilla.join('x');
+        
     }
 };
 
 async function encenderBot () {
-    //await init();
+    //await init();     //aca podemos parar el proceso y ver si funciona de manera mas rapida
     setTimeout(() => {
         console.log('** Listo **');
         leerExcel('nike.xlsx')
@@ -56,18 +58,55 @@ async function encenderBot () {
 encenderBot()
 
 client.on('ready', () => {
-    console.log('El bot esta disponible');
-    listaSNKRS();
-    const listt = String(snkrs.toString())
-    console.log(snkrs);
+    console.log('El bot esta disponible');                                      
+    listaSNKRS(); 
+    console.log(snkrs)
+                                                                                                                          
     client.on('messageCreate', async (message) =>{
         if(message.author.bot) return
 
-        const embed = new EmbedBuilder()
-            .setTitle('SNKRS')
-            .setDescription(nombreTilla[0] + '\n' + precioTilla[0] + '\n' + fechaTilla[0])
-            .setThumbnail(fotoTilla[0])
-        
+        if (message.content === 'info') {
+            const embed = new EmbedBuilder()
+            .setTitle('que par deseas ver')
+            .setDescription(snkrs.toString())//no se como sacar las , para que se vean mas bonitas
+            //hacer un for para contar la cantidad de elemento y asi seguir con lo if y no colocarlos a mano tipo for (a)
+            .setImage(fotoTilla[0])
             message.channel.send({ embeds: [embed] })
+        }
+            if ( message.content === '1'){
+                const embed = await new EmbedBuilder()
+                .setTitle('SNKRS')
+                .setDescription(nombreTilla[0] + '\n' + precioTilla[0] + '\n' + fechaTilla[0])
+                .setThumbnail(fotoTilla[0])
+            
+                message.channel.send({ embeds: [embed] })
+            }
+            if ( message.content === '2'){
+                const embed = await new EmbedBuilder()
+                .setTitle('SNKRS')
+                .setDescription(nombreTilla[1] + '\n' + precioTilla[1] + '\n' + fechaTilla[1])
+                .setThumbnail(fotoTilla[1])
+            
+                message.channel.send({ embeds: [embed] })
+            }
+            if ( message.content === '3'){
+                const embed = await new EmbedBuilder()
+                .setTitle('SNKRS')
+                .setDescription(nombreTilla[2] + '\n' + precioTilla[2] + '\n' + fechaTilla[2])
+                .setThumbnail(fotoTilla[2])
+            
+                message.channel.send({ embeds: [embed] })
+            }
+            if ( message.content === '4'){
+                const embed = await new EmbedBuilder()
+                .setTitle('SNKRS')
+                .setDescription(nombreTilla[3] + '\n' + precioTilla[3] + '\n' + fechaTilla[3])
+                .setThumbnail(fotoTilla[3])
+            
+                message.channel.send({ embeds: [embed] })
+            }
+        // podemos mejorar estos creando una funcion donde no haya que poner los numeros uno por uno si no que ya sepa cuanto elementos hay 
+        //de momento solo se me ocurre asi 
+        
     });
 })
