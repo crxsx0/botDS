@@ -40,7 +40,7 @@ function leerExcel(ruta){
 
 function listaSNKRS (){
     for (i = 0; i < nombreTilla.length; i ++){
-        snkrs.push(i +1 + '- ' + nombreTilla[i] + '\n');
+        snkrs.push(i +1 + '.- ' + nombreTilla[i]);
         nombreTilla.join('x');
         
     }
@@ -60,53 +60,93 @@ encenderBot()
 client.on('ready', () => {
     console.log('El bot esta disponible');                                      
     listaSNKRS(); 
-    console.log(snkrs)
                                                                                                                           
     client.on('messageCreate', async (message) =>{
         if(message.author.bot) return
 
-        if (message.content === 'info') {
+        var prefix = config.prefix
+
+        if (!message.content.startsWith(prefix)) return;
+
+        const args = message.content.slice(prefix.length).trim().split(/ +/g);
+        const commando = args.shift().toLowerCase();
+
+        if (commando === 'info') {
             const embed = new EmbedBuilder()
-            .setTitle('que par deseas ver')
-            .setDescription(snkrs.toString())//no se como sacar las , para que se vean mas bonitas
-            //hacer un for para contar la cantidad de elemento y asi seguir con lo if y no colocarlos a mano tipo for (a)
-            .setImage(fotoTilla[0])
+            .setTitle('NIKE.CL')
+            .setDescription(snkrs.join('\n'))
+            .setImage('https://play-lh.googleusercontent.com/kWXy8EJ9rL4iH2lDxiDv0LYd6DeTPHLbzGXDHwZLvRy5UBhYHezTDm51onReoWZdzjPX')
+            await message.channel.send({ embeds: [embed] });
+
+            /*if(commando === snkrSTR.substr(1, snkrSTR.length)){
+                const comandoNumTilla = parseInt(commando)-1
+                const embedTilla = new EmbedBuilder()
+                .setTitle('SNKRS')
+                .setDescription(nombreTilla[comandoNumTilla] + '\n' + precioTilla[comandoNumTilla] + '\n' + fechaTilla[comandoNumTilla])
+                .setThumbnail(fotoTilla[comandoNumTilla])
+                
+                message.channel.send({ embeds: [embedTilla]})
+            }*/
+            showUserDashboard();
+        }
+
+        else{
+            const comandoNumTilla = parseInt(commando)-1
+            const embedTilla = new EmbedBuilder()
+            .setTitle('SNKRS')
+            .setDescription(nombreTilla[comandoNumTilla] + '\n' + precioTilla[comandoNumTilla] + '\n' + fechaTilla[comandoNumTilla])
+            .setThumbnail(fotoTilla[comandoNumTilla])
+
+            message.channel.send({ embeds: [embedTilla]})
+        }
+
+        /*if(commandoNuevo === snkrs[0]){
+            const comandoNumTilla = parseInt(commandoNuevo)-1
+            const embedTilla = new EmbedBuilder()
+            .setTitle('SNKRS')
+            .setDescription(nombreTilla[comandoNumTilla] + '\n' + precioTilla[comandoNumTilla] + '\n' + fechaTilla[comandoNumTilla])
+            .setThumbnail(fotoTilla[comandoNumTilla])
+            
+            message.channel.send({ embeds: [embedTilla]})
+        }*/
+
+        /*if (message.content === commando){
+            const comandoNumTilla = parseInt(commando)-1
+            const embedTilla = new EmbedBuilder()
+            .setTitle('SNKRS')
+            .setDescription(nombreTilla[comandoNumTilla] + '\n' + precioTilla[comandoNumTilla] + '\n' + fechaTilla[comandoNumTilla])
+            .setThumbnail(fotoTilla[comandoNumTilla])
+            
+            message.channel.send({ embeds: [embedTilla] })
+        }*/
+        
+
+
+        /*if ( message.content === '2'){
+            const embed = await new EmbedBuilder()
+            .setTitle('SNKRS')
+            .setDescription(nombreTilla[1] + '\n' + precioTilla[1] + '\n' + fechaTilla[1])
+            .setThumbnail(fotoTilla[1])
+        
             message.channel.send({ embeds: [embed] })
         }
-            if ( message.content === '1'){
-                const embed = await new EmbedBuilder()
-                .setTitle('SNKRS')
-                .setDescription(nombreTilla[0] + '\n' + precioTilla[0] + '\n' + fechaTilla[0])
-                .setThumbnail(fotoTilla[0])
-            
-                message.channel.send({ embeds: [embed] })
-            }
-            if ( message.content === '2'){
-                const embed = await new EmbedBuilder()
-                .setTitle('SNKRS')
-                .setDescription(nombreTilla[1] + '\n' + precioTilla[1] + '\n' + fechaTilla[1])
-                .setThumbnail(fotoTilla[1])
-            
-                message.channel.send({ embeds: [embed] })
-            }
-            if ( message.content === '3'){
-                const embed = await new EmbedBuilder()
-                .setTitle('SNKRS')
-                .setDescription(nombreTilla[2] + '\n' + precioTilla[2] + '\n' + fechaTilla[2])
-                .setThumbnail(fotoTilla[2])
-            
-                message.channel.send({ embeds: [embed] })
-            }
-            if ( message.content === '4'){
-                const embed = await new EmbedBuilder()
-                .setTitle('SNKRS')
-                .setDescription(nombreTilla[3] + '\n' + precioTilla[3] + '\n' + fechaTilla[3])
-                .setThumbnail(fotoTilla[3])
-            
-                message.channel.send({ embeds: [embed] })
-            }
-        // podemos mejorar estos creando una funcion donde no haya que poner los numeros uno por uno si no que ya sepa cuanto elementos hay 
-        //de momento solo se me ocurre asi 
+        if ( message.content === '3'){
+            const embed = await new EmbedBuilder()
+            .setTitle('SNKRS')
+            .setDescription(nombreTilla[2] + '\n' + precioTilla[2] + '\n' + fechaTilla[2])
+            .setThumbnail(fotoTilla[2])
+        
+            message.channel.send({ embeds: [embed] })
+        }
+        if ( message.content === '4'){
+            const embed = await new EmbedBuilder()
+            .setTitle('SNKRS')
+            .setDescription(nombreTilla[3] + '\n' + precioTilla[3] + '\n' + fechaTilla[3])
+            .setThumbnail(fotoTilla[3])
+        
+            message.channel.send({ embeds: [embed] })
+        }*/
         
     });
 })
+
