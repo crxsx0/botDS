@@ -40,6 +40,7 @@ async function init () {
         const zapatilla = document.querySelectorAll('.datainfo a');
 
         const listaLinks = [];
+        
         for (let i of zapatilla) {
             listaLinks.push(i.href);
         };
