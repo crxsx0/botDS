@@ -47,21 +47,32 @@ function listaSNKRS (){
 };
 
 async function encenderBot () {
-    //await init();  
+    await init();  
     setTimeout(() => {
         console.log('** Listo **');
         leerExcel('nike.xlsx')
     },500);;
     client.login(config.token);
-    
 }
 
-encenderBot()
+function hora(){
+    let horaActual = new Date();
+    let horaProgramada = new Date();
+    horaProgramada.setHours(11);
+    horaProgramada.setMinutes(0);
+    horaProgramada.setSeconds(0);
+    return horaProgramada.getTime() - horaActual.getTime();
+}
+
+function actualizacion (){
+   setTimeout(() => { encenderBot()},hora());
+}
+
+actualizacion();
 
 client.on('ready', () => {
     console.log('El bot esta disponible');                                      
     listaSNKRS(); 
-    
     client.on('messageCreate', async (message) =>{
         if(message.author.bot) return
 
@@ -81,7 +92,7 @@ client.on('ready', () => {
             message.channel.send({ embeds: [embed] })
         }
         
-        if(commando == comandoNumTilla+1){
+        if(comandoNumTilla < snkrs.length){
             const embedTilla = new EmbedBuilder()
             .setTitle('SNKRS')
             .setDescription(nombreTilla[comandoNumTilla] + '\n' + precioTilla[comandoNumTilla] + '\n' + fechaTilla[comandoNumTilla])
@@ -90,6 +101,4 @@ client.on('ready', () => {
         }
     });
 })
-
-
 
